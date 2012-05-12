@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type"
+    content="text/html; charset=ISO-8859-1" />
+    <title>Garmin Communicator - Hello Device</title>
+    <style type="text/css" media="all">@import
+    "communicator-api/garmin/device/style/communicator.css";</style>
+	<script src="http://maps.google.com/maps?file=api&v=2.x&key=ABQIAAAAkOp4960CVjgwg7aH_RVbsBRx8XQQBS7xHJZeF9Ardr7B9wB3FxQLA2vT2m8bhaXkBrcrYKlrWsZJMw" type="text/javascript">
+	<script type="text/javascript" src="communicator-api/prototype/prototype.js"></script>
+    <script type="text/javascript"
+    src="communicator-api/prototype/prototype.js">&#160;</script>
+    <script type="text/javascript" src="communicator-api/garmin/device/GarminDeviceDisplay.js"></script>
+    <script type="text/javascript">
+		function load() { 
+		    var control;    
+			try {
+	            control = new Garmin.DeviceControl();
+	            if(control.isPluginInitialized()) {
+                    $('message').innerHTML = "<h2>Garmin Communicator plugin version "+control.getPluginVersionString()+" found!</h2>";
+                }
+	            if(control.unlock()) {
+	                $('status').innerHTML = "The plug-in has been unlocked successfully";
+                } else {
+                        $('status').innerHTML = "The plug-in was not unlocked successfully";
+                }
+	        } catch(e) {
+	                $('message').innerHTML = "<h2>" + e.message + "</h2>";
+	        }
+		}
+	</script>
+  </head>
+  <body onload="load()">
+    <p>The demonstrates basic detection of devices.</p>
+    <div id="garminDisplay"></div>
+    <div id="message"></div>
+    <div id="status"></div>
+     <object id="GarminActiveXControl" style="WIDTH: 0px; HEIGHT: 0px; visible: hidden" height="0" width="0" classid="CLSID:099B5A62-DE20-48C6-BF9E-290A9D1D8CB5">
+                <object id="GarminNetscapePlugin" type="application/vnd-garmin.mygarmin" width="0" height="0"> </object>
+        </object>
+  </body>
+</html>
