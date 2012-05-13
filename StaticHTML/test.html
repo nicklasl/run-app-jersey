@@ -100,8 +100,11 @@
         			for(var k=0;k<segment.getLength();k++){
         				var trackPoint=segment.getPoint(k);
 	        			myJSON+="{\"elevation\":\""+trackPoint.getElev()+"\",";
+	        			myJSON+="\"date\":\""+trackPoint.getDate()+"\",";
+	        			myJSON+="\"coordinates\":{";
 	        			myJSON+="\"latitude\":\""+trackPoint.getLat()+"\",";
 	        			myJSON+="\"longitude\":\""+trackPoint.getLng()+"\"";
+	        			myJSON+="}";
 	        			myJSON+="}";
         				if(k!=segment.getLength()-1) myJSON+=",";
         			}

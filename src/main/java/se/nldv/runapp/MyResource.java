@@ -20,11 +20,11 @@ import se.nldv.runapp.util.StoreHelper;
 @Path("/myresource")
 public class MyResource {
 	
-	private List<Track> tracks=new ArrayList<Track>();
+	private static List<Track> tracks=new ArrayList<Track>();
 	
-	{
-	tracks.addAll(StoreHelper.loadTracks());
-	System.out.println("Loaded "+tracks.size()+" tracks");
+	static{
+		tracks.addAll(StoreHelper.loadTracks());
+		System.out.println("Loaded "+tracks.size()+" tracks");
 	}
     
 
@@ -49,11 +49,4 @@ public class MyResource {
     	return Response.status(201).entity("Failed to retrieve and/or store a track.").build();
     }
     
-    public List<Track> getTracks() {
-		return tracks;
-	}
-
-	public void setTracks(List<Track> tracks) {
-		this.tracks = tracks;
-	}
 }

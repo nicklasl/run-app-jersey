@@ -1,22 +1,19 @@
 package se.nldv.runapp.model;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Point {
 
-	private Date date;
+	private String date;
 	private double elevation;
-	private double latitude;
-	private double longitude;
+	private Coordinates coordinates;
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -28,20 +25,12 @@ public class Point {
 		this.elevation = elevation;
 	}
 
-	public double getLatitude() {
-		return latitude;
+	public Coordinates getCoordinates() {
+		return coordinates;
 	}
 
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+	public void setCoordinates(Coordinates coordinates) {
+		this.coordinates = coordinates;
 	}
 
 }
