@@ -6,10 +6,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Track {
-
+	
+	private int id;
 	private List<Segment> segments;
 	private String duration;
 	private String startDate;
+	private double distance;
+	private double pace;
 
 	public List<Segment> getSegments() {
 		return segments;
@@ -34,6 +37,31 @@ public class Track {
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
+	public double getPace() {
+		return pace;
+	}
+
+	public void setPace(double pace) {
+		this.pace = pace;
+	}
+	
 	
 	
 }

@@ -9,6 +9,7 @@
 <script
 	src="http://maps.google.com/maps?file=api&v=2.69&key=ABQIAAAAkOp4960CVjgwg7aH_RVbsBQ8mFNy8mluGNJxasFfpjfy_rK2-hTqlIAT8DmZDqe108rJCva4VdWiGA"
 	type="text/javascript">&#160;</script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script type="text/javascript"
 	src="http://www.garmindeveloper.com/web/communicator-api-0.5/prototype/prototype.js">&#160;</script>
 <script type="text/javascript"
@@ -61,34 +62,10 @@
             	console.log('Running my method');
             	this.garminController.readFromDevice();
             }
-            
-            if(json.controller.numDevices > 0) {
-                var devices = json.controller.getDevices();
-                this._setStatus("Found " + devices.length + " devices.");
-
-                this._listDevices(devices);
-                        
-                this.cancelReadDataButton.onclick = function() {
-                    this.readDataButton.disabled = false;
-                    this.cancelReadDataButton.disabled = true;
-                    this._hideProgressBar();
-                    this.garminController.cancelReadFromDevice();
-                }.bind(this)
-                        
-                this.readDataButton.disabled = false;
-                this.readDataButton.onclick = function() {
-                    this.readDataButton.disabled = true;
-                    this.cancelReadDataButton.disabled = false;
-                    this._showProgressBar();
-                    this.garminController.readFromDevice();
-                }.bind(this)
-
-            } else {
-                this._setStatus("No devices found.");
-            }
         },
 
         onStartFindDevices: function(json) {
+        	console.log("Looking for connected Garmin devices");
             this._setStatus("Looking for connected Garmin devices");
         },
 
@@ -106,24 +83,45 @@
         },
 
         onFinishReadFromDevice: function(json) {
-            this.readDataButton.disabled = false;
-            this.cancelReadDataButton.disabled = true;
-            this._hideProgressBar();
-            this._setStatus("Data read from device.");
-
+        	console.log("Data read from device.");
             var gpsData = json.controller.gpsData;
-        	console.log(gpsData);
             this._setStatus("Parsing track data...");
             var factory = new Garmin.GpsDataFactory();
             factory.parseGpxDocument(gpsData);
             this.tracks = factory.getTracks();
-        	console.log(tracks);
-            this.waypoints = factory.getWaypoints();
-        	console.log(waypoints);
-            this._setStatus(this.tracks.length + " tracks and " + this.waypoints.length + " waypoints found");
+        	for(var i=0; i<this.tracks.length; i++) {
+        		var track = this.tracks[i];
+	        	var myJSON="{\"duration\":\""+track.getDuration()+"\",";
+	        	myJSON+="\"startDate\":\""+track.getStartDate()+"\",";
+       			myJSON+="\"segments\":[";
+        		for(var j=0;j<track.getNumSegments();j++){
+        			var segment=track.getSegment(j);
+	        		myJSON+="{\"points\":[";
+        			for(var k=0;k<segment.getLength();k++){
+        				var trackPoint=segment.getPoint(k);
+	        			myJSON+="{\"elevation\":\""+trackPoint.getElev()+"\",";
+	        			myJSON+="\"latitude\":\""+trackPoint.getLat()+"\",";
+	        			myJSON+="\"longitude\":\""+trackPoint.getLng()+"\"";
+	        			myJSON+="}";
+        				if(k!=segment.getLength()-1) myJSON+=",";
+        			}
+        			myJSON+="]}";
+        		}
+        		myJSON+="]}";
+        		jQuery.ajax({
+        			  type: 'POST',
+        			  contentType: "application/json",
+        			  url: "../myresource/",
+        			  data: myJSON,
+        			  success: function(data){
+    	        			alert(data);
+      	        			},
+        			  dataType: "json"
+        			});
+        	}
+            this._setStatus(this.tracks.length + " tracks");
         
             this._listTracks(this.tracks);
-            this._listWayPoints(this.waypoints);
         },
     
         ////////////////////////////////////////////////////////////////////////
@@ -132,7 +130,7 @@
         _intializeController: function() {
             try {
                 this.garminController = new Garmin.DeviceControl();
-                this.garminController.unlock("http://mydomain.com","pasteYourKeyInHere");
+                this.garminController.unlock();
                 this.garminController.register(this);
             } catch (e) {
                 this._setStatus(e.message);
@@ -235,21 +233,22 @@
 
     //display is created when HTML page is loaded
     var display;
-        
     function load() {
         display = new GarminDeviceControlDemo("statusText", "readMap");
+ 		$('findDevicesButton').click();
     }
+    
 </script>
 
 <body onload="load()">
 
-	<object id="GarminActiveXControl"
-		style="WIDTH: 0px; HEIGHT: 0px; visible: hidden" height="0" width="0"
-		classid="CLSID:099B5A62-DE20-48C6-BF9E-290A9D1D8CB5">
-		<object id="GarminNetscapePlugin"
-			type="application/vnd-garmin.mygarmin" width="0" height="0">
-		</object>
+<object id="GarminActiveXControl"
+	style="WIDTH: 0px; HEIGHT: 0px; visible: hidden" height="0" width="0"
+	classid="CLSID:099B5A62-DE20-48C6-BF9E-290A9D1D8CB5">
+	<object id="GarminNetscapePlugin"
+		type="application/vnd-garmin.mygarmin" width="0" height="0">
 	</object>
+</object>
 
 	<h2>Overlay Track Data on a Google Map</h2>
 

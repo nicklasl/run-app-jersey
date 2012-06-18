@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Running gps stuff app thingy</title>
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+<style>
+.span12 h1 {
+	color: #FE6E4C;
+	font-weight: bold;
+	padding: 5px;
+}
+
+h3 {
+	margin: 10px 0 10px 0;
+}
+</style>
+
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+				<h1>Running stuff app.</h1>
+			</div>
+		</div>
+		<!-- Headers -->
+		<div class="row">
+			<div class="span3">
+				<h2>Run date</h2>
+			</div>
+			<div class="span3">
+				<h2>Distance</h2>
+			</div>
+			<div class="span3">
+				<h2>Duration</h2>
+			</div>
+			<div class="span3">
+				<h2>Average pace</h2>
+			</div>
+		</div>
+		<!-- Data -->
+		<div id="dataContainer">
+			<div class="row">
+				<div class="span3">
+					<p>2012-06-17</p>
+				</div>
+				<div class="span3">
+					<p>5,66km</p>
+				</div>
+				<div class="span3">
+					<p>0:33:05</p>
+				</div>
+				<div class="span3">
+					<p>5,50 min/km</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button id="add-friend">Add Friend</button>
+	<ul id="friends-list">
+	</ul>
+	<script
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script
+		src="http://ajax.cdnjs.com/ajax/libs/underscore.js/1.1.4/underscore-min.js"></script>
+	<script
+		src="http://ajax.cdnjs.com/ajax/libs/backbone.js/0.3.3/backbone-min.js"></script>
+	<script>
+		(function($) {
+			Track = Backbone.Model.extend({
+				//Create a model to hold track atributes
+				startDate : null,
+				distance: null,
+				duration: null,
+				pace: null
+			});
+			
+			Tracks = Backbone.Collection.extend({
+				parse: function(resp, xhr) {
+			        return resp.tracks
+			    },
+				initialize : function(models, options) {
+					this.bind("add", options.view.addTrackDiv);
+					//Listen for new additions to the collection and call a view function if so
+				},
+			    model: Track,
+			    url: "http://localhost:8080/tracks"
+			});
+
+		/* 	Tracks = Backbone.Collection.extend({
+				//This is our collection and holds our models
+				initialize : function(models, options) {
+					this.bind("add", options.view.addTrackDiv);
+					//Listen for new additions to the collection and call a view function if so
+				}
+			}); */
+
+			AppView = Backbone.View.extend({
+				el : $("body"),
+				initialize : function() {
+					this.tracks = new Tracks(null, {
+						view : this
+					});
+					//Create a friends collection when the view is initialized.
+					//Pass it a reference to this view to create a connection between the two
+				},
+				events : {
+					"click #add-friend" : "showPrompt",
+				},
+				addTrackDiv : function(model) {
+					//The parameter passed is a reference to the model that was added
+					$("#dataContainer").append(
+							"<div class='row'><div class='span3'>"+
+								model.get('startDate')
+							+ "</div> <div class='span3'>"+
+								model.get('distance')
+							+ "</div> <div class='span3'>"+
+								model.get('duration')
+							+ "</div> <div class='span3'>"+
+								model.get('pace')
+							+ "</div></div>");
+					//Use .get to receive attributes of the model
+				}
+			});
+
+			var appview = new AppView;
+		})(jQuery);
+	</script>
+</body>
+</html>

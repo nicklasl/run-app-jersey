@@ -1,7 +1,6 @@
 
 package se.nldv.runapp;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -17,16 +16,13 @@ import se.nldv.runapp.util.StoreHelper;
 
 /** Example resource class hosted at the URI path "/myresource"
  */
-@Path("/myresource")
+@Path("/tracks")
 public class MyResource {
 	
-	private static List<Track> tracks=new ArrayList<Track>();
 	
-	static{
-		tracks.addAll(StoreHelper.loadTracks());
-		System.out.println("Loaded "+tracks.size()+" tracks");
-	}
-    
+	
+	private static List<Track> tracks;
+	
 
 	/** Method processing HTTP GET requests, producing "text/plain" MIME media
      * type.
@@ -36,17 +32,23 @@ public class MyResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Track> getIt() {
     	System.out.println("meh");
+    	if(tracks==null){
+    		tracks=Controller.getTracks();
+    	}
     	return tracks;
     }
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response putIt(Track track){
+    	track.setId(Controller.getNextFreeId());
     	if(StoreHelper.storeTrack(track)){
     		tracks.add(track);
     		return Response.status(201).entity("Received and stored a track.").build();
     	}
-    	return Response.status(201).entity("Failed to retrieve and/or store a track.").build();
+    	return Response.status(201).entity("Failed to store a track.").build();
     }
+
+	
     
 }

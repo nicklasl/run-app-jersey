@@ -1,7 +1,5 @@
 package se.nldv.runapp.util;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import junit.framework.Assert;
@@ -34,8 +32,11 @@ public class TimeCalculatorTest {
 	@Test
 	public void test2(){
 		for(Track track:tracks){
-			System.out.println(TimeCalculator.calculatePace(track.getDuration(), DistanceCalculator.calculateDistanceOfTrack(track)));
-			
+			double distance=DistanceCalculator.calculateDistanceOfTrack(track);
+			System.out.println("On "+track.getStartDate());
+			System.out.println("I ran "+distance+"km in "+track.getDuration());
+			System.out.println("That is pace="+TimeCalculator.calculatePace(track.getDuration(), distance)+" min/km");
+			System.out.println("--------");
 		}
 	}
 }

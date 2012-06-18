@@ -40,7 +40,6 @@ public class App {
 	}
 
 	public static void main(String[] args) throws IOException {
-
 		HttpServer httpServer = startServer();
 		File f = new File("StaticHTML");
 		System.out.println(f.getAbsolutePath());

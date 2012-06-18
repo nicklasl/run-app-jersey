@@ -114,7 +114,7 @@
         		jQuery.ajax({
         			  type: 'POST',
         			  contentType: "application/json",
-        			  url: "../myresource/",
+        			  url: "../tracks",
         			  data: myJSON,
         			  success: function(data){
     	        			alert(data);
@@ -238,7 +238,7 @@
     var display;
     function load() {
         display = new GarminDeviceControlDemo("statusText", "readMap");
- 		$('findDevicesButton').click();
+ 		//$('findDevicesButton').click();
     }
     
 </script>
