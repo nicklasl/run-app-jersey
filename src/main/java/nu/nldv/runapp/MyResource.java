@@ -3,11 +3,7 @@ package nu.nldv.runapp;
 
 import java.util.List;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -27,16 +23,19 @@ public class MyResource {
     private Controller controller;
 
 
-    /**
-     * Method processing HTTP GET requests, producing "text/plain" MIME media
-     * type.
-     *
-     * @return String that will be send back as a response of type "text/plain".
-     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Track> getIt() {
-        return controller.getTracks();
+    public List<Track> getAllTracks() {
+        List<Track> tracks = controller.getTracks();
+        return tracks;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    public Track getSingleTrack(@PathParam("id") int id) {
+        Track track = controller.getTrackById(id);
+        return track;
     }
 
     @POST
