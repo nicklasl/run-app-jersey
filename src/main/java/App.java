@@ -1,59 +1,44 @@
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.ws.rs.core.UriBuilder;
-
+import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
+import org.glassfish.grizzly.servlet.ServletRegistration;
+import org.glassfish.grizzly.servlet.WebappContext;
 
-import com.sun.jersey.api.container.grizzly2.GrizzlyWebContainerFactory;
+import java.io.IOException;
 
-/**
- * Hello world!
- * 
- */
+
 public class App {
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-	private static URI getBaseURI() {
-		return UriBuilder.fromUri("http://localhost/").port(8080).build();
-	}
 
-	public static final URI BASE_URI = getBaseURI();
 
-	protected static HttpServer startServer() throws IOException {
+    protected static HttpServer startServer() throws IOException {
+        HttpServer server = new HttpServer();
+        NetworkListener listener = new NetworkListener("grizzly2", "localhost", 3388);
+        server.addListener(listener);
 
-		final Map<String, String> initParams = new HashMap<String, String>();
+        // Initialize and add Spring-aware Jersey resource
+        WebappContext ctx = new WebappContext("ctx", "/api");
+        final ServletRegistration reg = ctx.addServlet("spring", new SpringServlet());
+        reg.addMapping("/*");
+        ctx.addContextInitParameter("contextConfigLocation", "classpath:applicationContext.xml");
+        ctx.addListener("org.springframework.web.context.ContextLoaderListener");
+        ctx.deploy(server);
 
-		initParams.put("com.sun.jersey.config.property.packages",
-				"se.nldv.runapp");
+        return server;
 
-		System.out.println("Starting grizzly...");
+    }
 
-		return GrizzlyWebContainerFactory.create(BASE_URI, initParams);
+    public static void main(String[] args) throws IOException {
+        HttpServer httpServer = startServer();
+        // Add the StaticHttpHandler to serve static resources from the static1 folder
+        httpServer.getServerConfiguration().addHttpHandler(
+                new StaticHttpHandler("StaticHTML/"), "/test");
 
-	}
+        httpServer.start();
+        System.out.println("Server started, press enter to stop it.");
+        System.in.read();
 
-	public static void main(String[] args) throws IOException {
-		HttpServer httpServer = startServer();
-		File f = new File("StaticHTML");
-		System.out.println(f.getAbsolutePath());
-		httpServer.getServerConfiguration().addHttpHandler(
-				new StaticHttpHandler(f.getAbsolutePath()), "/test");
+        httpServer.shutdownNow();
 
-		System.out
-				.println(String
-						.format("Jersey app started with WADL available at "
-								+ "%sapplication.wadl\nTry out %smyresources/\nHit enter to stop it...",
-								BASE_URI, BASE_URI));
-		System.in.read();
-
-		httpServer.stop();
-
-	}
+    }
 }
