@@ -1,13 +1,16 @@
 package nu.nldv.runapp.util;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class TimeCalculator {
 
-    public static double calculatePace(String duration, double trackLength) {
+    public double calculatePace(String duration, double trackLength) {
         double durationInMinutes = getDurationInMinutesFromString(duration);
         return durationInMinutes / trackLength;
     }
 
-    private static double getDurationInMinutesFromString(String durationString) {
+    private double getDurationInMinutesFromString(String durationString) {
         String[] times = durationString.split(":");
         double duration = Double.valueOf(times[1]);
         if (!times[0].equalsIgnoreCase("00")) {

@@ -1,22 +1,23 @@
 package nu.nldv.runapp.util;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import nu.nldv.runapp.model.Track;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-import nu.nldv.runapp.model.Track;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
 @Repository
 public class StoreHelper {
+
+    @Autowired
+    private DistanceCalculator distanceCalculator;
+
+    @Autowired
+    private TimeCalculator timeCalculator;
 
     Gson gson = new Gson();
 
@@ -57,8 +58,8 @@ public class StoreHelper {
                 String s = "";
                 s = br.readLine();
                 Track t = gson.fromJson(s, Track.class);
-                t.setDistance(DistanceCalculator.calculateDistanceOfTrack(t));
-                t.setPace(TimeCalculator.calculatePace(t.getDuration(), t.getDistance()));
+                t.setDistance(distanceCalculator.calculateDistanceOfTrack(t));
+                t.setPace(timeCalculator.calculatePace(t.getDuration(), t.getDistance()));
                 tracks.add(t);
             } catch (JsonSyntaxException e) {
                 e.printStackTrace();

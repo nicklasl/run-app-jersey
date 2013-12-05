@@ -4,6 +4,7 @@ import nu.nldv.runapp.model.Coordinates;
 import nu.nldv.runapp.model.Point;
 import nu.nldv.runapp.model.Segment;
 import nu.nldv.runapp.model.Track;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -15,6 +16,7 @@ import nu.nldv.runapp.model.Track;
  *
  * @author Nicklas Lundin
  */
+@Service
 public class DistanceCalculator {
     private static final int R = 6378; // km
 
@@ -25,7 +27,7 @@ public class DistanceCalculator {
      * @param l2 Second {@link Coordinates}
      * @return the distance (in km) between the two coordinates
      */
-    private static double calculateDistance(Coordinates l1, Coordinates l2) {
+    private double calculateDistance(Coordinates l1, Coordinates l2) {
 
         double dLat = Math.toRadians(l2.getLatitude() - l1.getLatitude());
         double dLon = Math.toRadians(l2.getLongitude() - l1.getLongitude());
@@ -46,13 +48,13 @@ public class DistanceCalculator {
      * @param track the track to calculate
      * @return the total distance in km.
      */
-    public static double calculateDistanceOfTrack(Track track) {
+    public double calculateDistanceOfTrack(Track track) {
         double totalDistanceInKm = 0;
         for (Segment segment : track.getSegments()) {
             for (int i = 0; i < segment.getPoints().size() - 1; i++) {
                 Point p1 = segment.getPoints().get(i);
                 Point p2 = segment.getPoints().get(i + 1);
-                totalDistanceInKm += DistanceCalculator.calculateDistance(p1.getCoordinates(), p2.getCoordinates());
+                totalDistanceInKm += calculateDistance(p1.getCoordinates(), p2.getCoordinates());
             }
         }
         return totalDistanceInKm;

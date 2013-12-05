@@ -8,10 +8,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import nu.nldv.runapp.model.Track;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/applicationContext.xml")
 public class DistanceCalculatorTest {
 
-    StoreHelper storeHelper = new StoreHelper();
+    @Autowired
+    StoreHelper storeHelper;
+    @Autowired
+    DistanceCalculator distanceCalculator;
 
     List<Track> tracks;
 
@@ -30,7 +39,7 @@ public class DistanceCalculatorTest {
     public void testDistance() {
         for (Track track : tracks) {
             System.out.println("Track has duration:" + track.getDuration());
-            double totalDistanceInKm = DistanceCalculator.calculateDistanceOfTrack(track);
+            double totalDistanceInKm = distanceCalculator.calculateDistanceOfTrack(track);
             System.out.println(totalDistanceInKm);
         }
     }
