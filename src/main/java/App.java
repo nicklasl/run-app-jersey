@@ -21,6 +21,7 @@ public class App {
         final ServletRegistration reg = ctx.addServlet("spring", new SpringServlet());
         reg.addMapping("/*");
         ctx.addContextInitParameter("contextConfigLocation", "classpath:applicationContext.xml");
+        ctx.addContextInitParameter("com.sun.jersey.config.property.packages", "nu.nldv.runapp;org.codehaus.jackson.jaxrs");
         ctx.addListener("org.springframework.web.context.ContextLoaderListener");
         ctx.deploy(server);
 
@@ -32,7 +33,7 @@ public class App {
         HttpServer httpServer = startServer();
         // Add the StaticHttpHandler to serve static resources from the static1 folder
         httpServer.getServerConfiguration().addHttpHandler(
-                new StaticHttpHandler("StaticHTML/"), "/test");
+                new StaticHttpHandler("StaticHTML/"), "/");
 
         httpServer.start();
         System.out.println("Server started, press enter to stop it.");
