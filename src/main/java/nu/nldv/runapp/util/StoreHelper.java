@@ -22,7 +22,7 @@ public class StoreHelper {
     Gson gson = new Gson();
 
     public boolean storeTrack(Track track) {
-        File f = new File("Tracks\\Track_" + trim(track.getStartDate()) + ".json");
+        File f = new File("Tracks"+File.separator+"Track_" + track.getId() + ".json");
         if (f.exists()) {
             System.err.println("Trying to write to a file that already exists");
             return false;

@@ -3,13 +3,28 @@
 <head>
     <title>Tracks</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
     <script src="js/service.js"></script>
+    <script src="js/maps.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheets/blueprint.css">
 
 </head>
 <body>
-<h1>Some header</h1>
-<button onclick="getTracks()">Get tracks</button>
-<div id="trackList" class="container"></div>
+<div id="content" class="container">
+    <div class="span-24">
+        <h1>Some header</h1>
+    </div>
+
+    <span class="span-6">
+        <button onclick="getTracks()">Get tracks</button>
+        <div id="trackList"></div>
+    </span>
+
+    <div class="span-18 last">
+        <div id="holder" style="position: fixed;height: 400px; width: 60%;">
+            <div id="map-canvas" style="height: 400px;"></div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
