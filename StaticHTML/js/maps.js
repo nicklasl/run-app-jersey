@@ -1,4 +1,5 @@
 var map;
+var markersArray = [];
 function initialize() {
     console.log("init map is running");
     var mapOptions = {
@@ -9,28 +10,35 @@ function initialize() {
         mapOptions);
 }
 
-function showLines(array, hexColor){
-    var coordinates = $.map(array, function(node){
+function clearMapData() {
+    for (var i = 0; i < markersArray.length; i++) {
+        markersArray[i].setMap(null);
+    }
+    markersArray.length = 0;
+}
+
+function showLines(array, hexColor) {
+    var coordinates = $.map(array, function (node) {
         return new google.maps.LatLng(node.coordinates.latitude, node.coordinates.longitude);
     });
-    var flightPath = new google.maps.Polyline({
+    var path = new google.maps.Polyline({
         path: coordinates,
         geodesic: true,
         strokeColor: hexColor,
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
-
-    flightPath.setMap(map);
+    markersArray.push(path);
+    path.setMap(map);
 }
 
-function setCenter(lat,lng){
+function setCenter(lat, lng) {
     var location = new google.maps.LatLng(lat, lng);
     // using global variable:
     map.panTo(location);
 }
 
-function setZoom(zoomFactor){
+function setZoom(zoomFactor) {
     map.setZoom(zoomFactor);
 }
 

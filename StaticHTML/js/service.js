@@ -28,13 +28,13 @@ function getTrackFromId(trackId) {
 }
 
 function toggleDiv(trackId) {
-    var track=getTrackFromId(trackId);
-    var color=generateRandomHexColor();
+    var track = getTrackFromId(trackId);
+    var color = generateRandomHexColor();
     showLines(track.segments.points, color);
     var point = track.segments.points[0].coordinates;
-    setCenter(point.latitude,point.longitude);
+    setCenter(point.latitude, point.longitude);
     setZoom(12);
-    $('#' + trackId+'_div').toggle();
+    $('#' + trackId + '_div').toggle();
 }
 
 function generateRandomHexColor() {
@@ -44,16 +44,15 @@ function getTracks() {
     var trackList = $('#trackList');
     trackList.empty();
     $.getJSON("/api/tracks", function (data) {
-        tracks=data.track;
+        tracks = data.track;
         data.track.forEach(function (track) {
             trackList.append('<span>' +
-                '<span style="font-weight:bold" onclick="toggleDiv(' + track.id + ')">' + formatStringAsNumber(track.distance, 2) + ' km run on ' + formatDate(track.startDate) + '</span>' +
-                    '<div id="' + track.id + '_div" style="display:none;">' +
-                        '<span class="column">Duration: ' + track.duration + '</span>' +
-                        '<span class="column">Pace: ' + formatStringAsNumber(track.pace,2) + ' min/km</span>' +
-                    '</div>' +
+                '<span style="font-weight:bold; cursor: pointer;" onclick="toggleDiv(' + track.id + ')">' + formatStringAsNumber(track.distance, 2) + ' km run on ' + formatDate(track.startDate) + '</span>' +
+                '<div id="' + track.id + '_div" style="display:none;">' +
+                '<span class="column">Duration: ' + track.duration + '</span>' +
+                '<span class="column">Pace: ' + formatStringAsNumber(track.pace, 2) + ' min/km</span>' +
+                '</div>' +
                 '</span><br/><hr>')
         });
     });
-
 }
