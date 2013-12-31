@@ -56,3 +56,9 @@ function getTracks() {
         });
     });
 }
+
+function showAddNewTrack(){
+    $('#showTracks').hide();
+    $('#addNewTrackContainer').show();
+
+}
