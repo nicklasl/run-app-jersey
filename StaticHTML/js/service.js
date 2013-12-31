@@ -19,12 +19,18 @@ function formatStringAsNumber(myNumber, numberOfDecimals) {
 }
 
 function getTrackFromId(trackId) {
+    var greppedArray = $j.grep(tracks, function (track, i) {
+        return track.id == trackId;
+    });
+    return greppedArray[0];
+    /*
     for (var i = 0; i < tracks.length; i++) {
         console.log(tracks[i].id);
         if (trackId == tracks[i].id) {
             return tracks[i];
         }
     }
+    */
 }
 
 function toggleDiv(trackId) {
@@ -34,16 +40,16 @@ function toggleDiv(trackId) {
     var point = track.segments.points[0].coordinates;
     setCenter(point.latitude, point.longitude);
     setZoom(12);
-    $('#' + trackId + '_div').toggle();
+    $j('#' + trackId + '_div').toggle();
 }
 
 function generateRandomHexColor() {
     return '#' + Math.floor(Math.random() * 16777215).toString(16);
 }
 function getTracks() {
-    var trackList = $('#trackList');
+    var trackList = $j('#trackList');
     trackList.empty();
-    $.getJSON("/api/tracks", function (data) {
+    $j.getJSON("/api/tracks", function (data) {
         tracks = data.track;
         data.track.forEach(function (track) {
             trackList.append('<span>' +
@@ -58,7 +64,18 @@ function getTracks() {
 }
 
 function showAddNewTrack(){
-    $('#showTracks').hide();
-    $('#addNewTrackContainer').show();
+    $j('#showTracks').hide();
+    $j('#addNewTrackContainer').show();
+    load();
+}
 
+
+function load() {
+    var display = new Garmin.DeviceDisplay("garminDisplay", {
+        //pathKeyPairsArray:      ["http://developer.garmin.com","49048b3369edffd4a511d920202a6214"],
+        autoFindDevices: true, //start searching for devices
+        showStatusElement: true, //basic feedback provided
+        showReadDataElement: false //don't offer to read data
+        //add other options per the documentation
+    });
 }

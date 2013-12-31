@@ -2,11 +2,11 @@
 <html>
 <head>
     <title>Tracks</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
 
     <script type="text/javascript" src="communicator-api/prototype/prototype.js"></script>
     <script type="text/javascript" src="communicator-api/garmin/device/GarminDeviceDisplay.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="js/service.js"></script>
     <script src="js/maps.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheets/blueprint.css">
@@ -15,6 +15,10 @@
     </style>
 </head>
 <body>
+<script type="text/javascript">
+    var $j = jQuery.noConflict();
+</script>
+
 <div id="content" class="container">
     <div class="span-20">
         <h1>Some header</h1>
@@ -24,7 +28,7 @@
     </div>
 
     <div class="span-24" id="addNewTrackContainer" style="display: none;">
-
+        <div id="garminDisplay"></div>
 
     </div>
 

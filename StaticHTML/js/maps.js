@@ -18,7 +18,7 @@ function clearMapData() {
 }
 
 function showLines(array, hexColor) {
-    var coordinates = $.map(array, function (node) {
+    var coordinates = $j.map(array, function (node) {
         return new google.maps.LatLng(node.coordinates.latitude, node.coordinates.longitude);
     });
     var path = new google.maps.Polyline({
