@@ -7,6 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import nu.nldv.runapp.model.gpx.GpxType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import nu.nldv.runapp.model.Track;
@@ -48,5 +49,12 @@ public class MyResource {
         return Response.status(Response.Status.BAD_REQUEST).entity("Failed to store a track.").build();
     }
 
+    @POST
+    @Path("/xml")
+    @Consumes(MediaType.APPLICATION_XML)
+    public Response putXml(GpxType gpx){
+        System.out.println(gpx.getVersion());
+        return Response.status(Response.Status.OK).build();
+    }
 
 }

@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 var tracks;
+var garminDeviceDisplay;
 
 function formatDate(startDate) {
     var date = new Date(startDate);
@@ -71,11 +72,30 @@ function showAddNewTrack(){
 
 
 function load() {
-    var display = new Garmin.DeviceDisplay("garminDisplay", {
+    garminDeviceDisplay = new Garmin.DeviceDisplay("garminDisplay", {
         //pathKeyPairsArray:      ["http://developer.garmin.com","49048b3369edffd4a511d920202a6214"],
-        autoFindDevices: true, //start searching for devices
-        showStatusElement: true, //basic feedback provided
-        showReadDataElement: false //don't offer to read data
-        //add other options per the documentation
+        autoFindDevices: true,
+        autoSelectFirstDevice: true,
+        showStatusElement: true,
+        showReadDataElement: true,
+        afterFinishReadFromDevice: function(dataString, dataDoc, extension, activities, display){
+            console.log("HEEEJ");
+            console.log(dataString);
+            $j.ajax({
+                type:"POST",
+                url:"/api/tracks/xml",
+                contentType: "application/xml",
+                data: dataString,
+                success: function(data){
+                    console.log("succeeded");
+                },
+                error: function(data){
+                    console.log("error");
+                }
+
+            });
+
+        }
     });
+
 }
