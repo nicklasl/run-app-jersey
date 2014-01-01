@@ -1,19 +1,20 @@
 package nu.nldv.runapp.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 @XmlRootElement
 public class Point {
 
-    private String date;
+    private Date date;
     private double elevation;
     private Coordinates coordinates;
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

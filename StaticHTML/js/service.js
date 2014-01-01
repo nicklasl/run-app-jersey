@@ -83,7 +83,7 @@ function load() {
             console.log(dataString);
             $j.ajax({
                 type:"POST",
-                url:"/api/tracks/xml",
+                url:"/api/tracks",
                 contentType: "application/xml",
                 data: dataString,
                 success: function(data){

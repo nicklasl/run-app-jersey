@@ -1,5 +1,6 @@
 package nu.nldv.runapp.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,7 +11,7 @@ public class Track {
     private int id;
     private List<Segment> segments;
     private String duration;
-    private String startDate;
+    private Date startDate;
     private double distance;
     private double pace;
 
@@ -38,11 +39,11 @@ public class Track {
         this.duration = duration;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 

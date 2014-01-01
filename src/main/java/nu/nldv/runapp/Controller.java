@@ -1,16 +1,14 @@
 package nu.nldv.runapp;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import nu.nldv.runapp.model.Track;
 import nu.nldv.runapp.util.StoreHelper;
-import org.springframework.web.client.RestClientException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public final class Controller {
@@ -29,6 +27,7 @@ public final class Controller {
     }
 
     public int getNextFreeId() {
+        if (tracks == null) getTracks();
         return tracks.size();
     }
 

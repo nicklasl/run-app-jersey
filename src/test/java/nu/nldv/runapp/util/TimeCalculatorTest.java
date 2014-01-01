@@ -1,5 +1,6 @@
 package nu.nldv.runapp.util;
 
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -39,7 +40,6 @@ public class TimeCalculatorTest {
     @Test
     public void testThatTracksWereLoaded() {
         Assert.assertNotNull(tracks);
-        Assert.assertFalse(tracks.isEmpty());
     }
 
     @Test
@@ -51,5 +51,14 @@ public class TimeCalculatorTest {
             System.out.println("That is pace=" + timeCalculator.calculatePace(track.getDuration(), distance) + " min/km");
             System.out.println("--------");
         }
+    }
+
+    @Test
+    public void testDateDifference() throws InterruptedException {
+        Date d1 = new Date();
+        Thread.sleep(61000);
+        Date d2 = new Date();
+        String durationBetweenDates = timeCalculator.getDurationBetweenDates(d1, d2);
+        System.out.println(durationBetweenDates);
     }
 }

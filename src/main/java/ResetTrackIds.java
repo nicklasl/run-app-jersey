@@ -1,9 +1,11 @@
 import nu.nldv.runapp.model.Track;
 import nu.nldv.runapp.util.StoreHelper;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,12 +17,12 @@ public class ResetTrackIds {
 
     private StoreHelper storeHelper;
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println("Resetting tracks.");
         new ResetTrackIds().run();
     }
 
-    public void run(){
+    public void run() {
         storeHelper = new StoreHelper();
         List<Track> tracks = storeHelper.loadTracks();
         sortOnDate(tracks);
@@ -32,8 +34,8 @@ public class ResetTrackIds {
     }
 
     private void resetIds(List<Track> tracks) {
-        for(int i =0;i<tracks.size(); i++){
-            tracks.get(i).setId(i+1);
+        for (int i = 0; i < tracks.size(); i++) {
+            tracks.get(i).setId(i + 1);
         }
     }
 
@@ -54,25 +56,17 @@ public class ResetTrackIds {
 
         SimpleDateFormat sdf;
 
-        public DateComparator(){
+        public DateComparator() {
             //Fri Jun 01 2012 04:18:39 GMT+0200
-            sdf=new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss", Locale.US);
+            sdf = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss", Locale.US);
         }
 
         @Override
         public int compare(Track o1, Track o2) {
-            if(o1.getStartDate()==null) return -1;
-            if(o2.getStartDate()==null) return 1;
-            try {
-                return parseDate(o1.getStartDate()).compareTo(parseDate(o2.getStartDate()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return 0;
-            }
+            if (o1.getStartDate() == null) return -1;
+            if (o2.getStartDate() == null) return 1;
+            return o1.getStartDate().compareTo(o2.getStartDate());
         }
 
-        private Date parseDate(String startDate) throws ParseException {
-            return sdf.parse(startDate);
-        }
     }
 }
