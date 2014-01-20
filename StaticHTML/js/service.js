@@ -24,14 +24,6 @@ function getTrackFromId(trackId) {
         return track.id == trackId;
     });
     return greppedArray[0];
-    /*
-    for (var i = 0; i < tracks.length; i++) {
-        console.log(tracks[i].id);
-        if (trackId == tracks[i].id) {
-            return tracks[i];
-        }
-    }
-    */
 }
 
 function toggleDiv(trackId) {
@@ -64,7 +56,7 @@ function getTracks() {
     });
 }
 
-function showAddNewTrack(){
+function showAddNewTrack() {
     $j('#showTracks').hide();
     $j('#addNewTrackContainer').show();
     load();
@@ -78,18 +70,18 @@ function load() {
         autoSelectFirstDevice: true,
         showStatusElement: true,
         showReadDataElement: true,
-        afterFinishReadFromDevice: function(dataString, dataDoc, extension, activities, display){
+        afterFinishReadFromDevice: function (dataString, dataDoc, extension, activities, display) {
             console.log("HEEEJ");
             console.log(dataString);
             $j.ajax({
-                type:"POST",
-                url:"/api/tracks",
+                type: "POST",
+                url: "/api/tracks",
                 contentType: "application/xml",
                 data: dataString,
-                success: function(data){
+                success: function (data) {
                     console.log("succeeded");
                 },
-                error: function(data){
+                error: function (data) {
                     console.log("error");
                 }
 
