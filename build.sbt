@@ -8,4 +8,7 @@ libraryDependencies ++= Seq(
   cache
 )     
 
+libraryDependencies += "com.google.code.gson" % "gson" % "2.2.1"
+
+
 play.Project.playScalaSettings
