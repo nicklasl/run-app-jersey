@@ -1,4 +1,4 @@
-name := "run-app-jersey-play"
+name := "run-app-play"
 
 version := "1.0-SNAPSHOT"
 
@@ -7,8 +7,6 @@ libraryDependencies ++= Seq(
   anorm,
   cache
 )     
-
-libraryDependencies += "com.google.code.gson" % "gson" % "2.2.1"
 
 
 play.Project.playScalaSettings

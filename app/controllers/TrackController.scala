@@ -5,6 +5,7 @@ import util.StoreHelper
 import play.api.libs.json.{JsValue, Json}
 import model.Track
 import play.api.Logger
+import java.io.File
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,4 +34,16 @@ object TrackController extends Controller {
       else BadRequest
   }
 
+  def storeGpx = Action(parse.multipartFormData)  {
+    request =>
+      request.body.file("gpx").map { gpxFile =>
+        val filename = gpxFile.filename
+        gpxFile.ref.moveTo(new File(s"/tmp/track/$filename"))
+        Ok("File uploaded")
+      }.getOrElse {
+        Redirect(routes.Application.index).flashing(
+          "error" -> "Missing file")
+      }
+
+  }
 }

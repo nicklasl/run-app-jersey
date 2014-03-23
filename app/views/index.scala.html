@@ -1,7 +1,15 @@
 @(message: String)
 
-@main("Welcome to Play") {
+@main(message) {
 
-    @play20.welcome(message)
+    @helper.form(action = routes.TrackController.storeGpx, 'enctype -> "multipart/form-data") {
+
+        <input type="file" name="gpx">
+
+        <p>
+            <input type="submit">
+        </p>
+
+    }
 
 }
