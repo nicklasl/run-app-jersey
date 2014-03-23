@@ -47,7 +47,7 @@ object TrackController extends Controller {
           val id = StoreHelper.storeTrack(track.copy(id = StoreHelper.nextId), fileName = "Track_" + StoreHelper.nextId + ".json")
           Ok("File uploaded with id=" + id)
       }.getOrElse {
-        Redirect(routes.Application.index).flashing(
+        Redirect(routes.Application.upload).flashing(
           "error" -> "Missing file")
       }
 

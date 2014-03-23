@@ -4,6 +4,7 @@
 
 # Home page
 GET        /                    controllers.Application.index
+GET        /upload              controllers.Application.upload
 
 GET        /tracks              controllers.TrackController.listTracks
 GET        /track/:id           controllers.TrackController.singleTrack(id:Int)

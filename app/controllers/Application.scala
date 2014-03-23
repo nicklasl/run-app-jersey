@@ -8,4 +8,8 @@ object Application extends Controller {
     Ok(views.html.index("All your GPX belong to us!"))
   }
 
+  def upload = Action {
+    Ok(views.html.upload())
+  }
+
 }

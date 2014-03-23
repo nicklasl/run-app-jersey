@@ -2,14 +2,15 @@
 
 @main(message) {
 
-    @helper.form(action = routes.TrackController.storeGpx, 'enctype -> "multipart/form-data") {
+   <div ng-app="trackApp" ng-controller="ViewTrackController" class="container">
+        <div id="header" class="row">
+            <h1>This is some fancy Running stuff</h1>
+        </div>
+           <div class="row-fluid" ng-repeat="track in tracks">
+               {{track.id}}
+           </li>
 
-        <input type="file" name="gpx">
+   </div>
 
-        <p>
-            <input type="submit">
-        </p>
-
-    }
 
 }

@@ -37,7 +37,7 @@ object StoreHelper {
               distance = distance,
               pace = Some(TimeCalculator.calculatePace(track.duration.get, distance.get))
             )
-        }
+        }.sortBy(track => track.id)
         Cache.set("tracks", tracks)
         tracks
       } else {
