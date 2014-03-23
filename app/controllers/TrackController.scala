@@ -25,12 +25,10 @@ object TrackController extends Controller {
   def storeTrack = Action {
     implicit request =>
       val jsonOption: Option[JsValue] = request.body.asJson
-      Logger.debug("" + jsonOption)
       if (jsonOption.isDefined) {
         val track = jsonOption.get.as[Track]
-        StoreHelper.storeTrack(track.copy(id = StoreHelper.nextId), fileName = "Track_" + StoreHelper.nextId + ".json")
-        Logger.debug("" + track.id)
-        Ok
+        val id = StoreHelper.storeTrack(track.copy(id = StoreHelper.nextId), fileName = "Track_" + StoreHelper.nextId + ".json")
+        Ok(Json.toJson(track.copy(id = id))).as("application/json")
       }
       else BadRequest
   }

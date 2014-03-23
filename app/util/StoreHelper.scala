@@ -2,7 +2,7 @@ package util
 
 import model.Track
 import java.io.File
-import play.api.Play
+import play.api.{Logger, Play}
 import play.api.Play.current
 import play.api.libs.json.{Json, JsValue}
 import play.api.libs.Files
@@ -29,7 +29,15 @@ object StoreHelper {
       val file: Option[File] = Play.getExistingFile("Tracks")
       if (file.isDefined) {
         val jsValues: List[JsValue] = file.get.listFiles().flatMap(fileToJson(_)).toList
-        val tracks: List[Track] = jsValues.map(js => js.as[Track])
+        val tracks = jsValues.map(js => js.as[Track]).map {
+          track =>
+            Logger.debug("mapping " + track.id+" : "+track.date)
+            val distance = DistanceCalculator.calculateDistanceOfTrack(track)
+            track.copy(
+              distance = distance,
+              pace = Some(TimeCalculator.calculatePace(track.duration.get, distance.get))
+            )
+        }
         Cache.set("tracks", tracks)
         tracks
       } else {
@@ -43,6 +51,7 @@ object StoreHelper {
     val dir = Play.getExistingFile("Tracks")
     val file = new File(dir.get.getAbsolutePath + File.separator + fileName)
     Files.writeFile(file, Json.toJson(track).toString())
+    track.id
   }
 
   def nextId: Int = listTracks.length
