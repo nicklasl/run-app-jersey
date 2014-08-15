@@ -1,6 +1,8 @@
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 .angular-leaflet-map {
-    width: 640px;
+    width: 500px;
     height: 400px;
+    padding: 10px;
+    margin: 10px;
 }

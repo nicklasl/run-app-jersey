@@ -27,6 +27,20 @@ trackApp.controller('ViewTrackController', function ($scope, $http, $modal) {
 
 var modalController = function ($scope, $modalInstance, track) {
 
+    angular.extend($scope, {
+        center: {
+            lat: 48,
+            lng: 4,
+            zoom: 4
+        },
+        paths: {
+            p1: {
+                color: '#008000',
+                weight: 1
+            }
+        }
+    });
+
     $scope.showSegment = function (segment) {
         console.log(segment.points[0].coordinates.latitude, segment.points[0].coordinates.longitude)
 
@@ -44,23 +58,6 @@ var modalController = function ($scope, $modalInstance, track) {
             zoom: 14
         };
     }
-
-    angular.extend($scope, {
-        center: {
-            lat: 48,
-            lng: 4,
-            zoom: 4
-        },
-        paths: {
-            p1: {
-                color: '#008000',
-                weight: 1
-            }
-        },
-        defaults: {
-            scrollWheelZoom: false
-        }
-    });
 
     $scope.showSegment(track.segments[0]);
 
