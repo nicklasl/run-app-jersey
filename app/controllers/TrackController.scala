@@ -17,6 +17,7 @@ import nu.nldv.parsethatgpx.controllers.ParseThatGpx
 object TrackController extends Controller {
 
   def listTracks = Action {
+    implicit request =>
     Ok(Json.toJson(StoreHelper.listTracks)).as("application/json")
   }
 

@@ -1,16 +1,40 @@
-@(message: String)
+@(message: String)(implicit req: RequestHeader)
 
 @main(message) {
 
-   <div ng-app="trackApp" ng-controller="ViewTrackController" class="container">
+    @helper.javascriptRouter("jsRoutes")(
+        routes.javascript.TrackController.listTracks,
+        routes.javascript.TrackController.storeTrack
+    )
+
+    <div ng-app="trackApp" ng-controller="ViewTrackController" class="container">
+        @*<ng-include src="fragments/modal.html" />*@
         <div id="header" class="row">
             <h1>This is some fancy Running stuff</h1>
         </div>
-           <div class="row-fluid" ng-repeat="track in tracks">
-               {{track.id}}
-           </li>
+        <div class="table-responsive">
+        <table class="table table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th ng-click="predicate = 'date'; reverse=!reverse">Date</th>
+                    <th ng-click="predicate = 'distance'; reverse=!reverse">Distance</th>
+                    <th ng-click="predicate = 'pace'; reverse=!reverse">Pace</th>
+                    <th ng-click="predicate = 'duration'; reverse=!reverse">Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="track in tracks | orderBy:predicate:reverse" ng-click="showDetails(track)">
+                    <td>{{track.date | date:'yyyy-MM-dd HH:mm'}}</td>
+                    <td>{{track.distance | number: 2}} km</td>
+                    <td>{{track.pace | number: 2}} min/km</td>
+                    <td>{{track.duration}}</td>
+                </tr>
+            </tbody>
+        </table>
 
-   </div>
+        </div>
+
+    </div>
 
 
 }

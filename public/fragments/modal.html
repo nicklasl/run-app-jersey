@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h3>{{track.date | date:'yyyy-MM-dd HH:mm'}}</h3>
+</div>
+<div class="modal-body">
+    {{track.distance | number: 2}} km
+    <ol>
+        <li ng-if="track.segments.length > 1" ng-repeat="segment in track.segments">
+            <div class="btn" ng-click="showSegment(segment)">Segment</div>
+        </li>
+    </ol>
+
+<div ng-if="track">
+    <leaflet center="center" paths="paths" defaults="defaults" height="500"></leaflet>
+</div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="close()">Close</button>
+</div>
