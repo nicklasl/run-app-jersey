@@ -7,6 +7,7 @@ import model.Track
 import play.api.Play
 import java.io.File
 import nu.nldv.parsethatgpx.controllers.ParseThatGpx
+import scala.concurrent.Future
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +19,7 @@ object TrackController extends Controller {
 
   def listTracks = Action {
     implicit request =>
-    Ok(Json.toJson(StoreHelper.listTracks)).as("application/json")
+      Ok(Json.toJson(StoreHelper.listTracks)).as("application/json")
   }
 
   def singleTrack(id: Int) = Action {
@@ -36,21 +37,21 @@ object TrackController extends Controller {
       else BadRequest
   }
 
-  def storeGpx = Action(parse.multipartFormData) {
+  def storeGpx = Action.async(parse.multipartFormData) {
     request =>
-      request.body.file("gpx").map {
-        gpxFile =>
-          val filename = gpxFile.filename
-          val file: File = Play.current.getFile(s"/tmp/gpx/$filename")
-          gpxFile.ref.moveTo(file, replace = true)
-          val gpx = ParseThatGpx.parse(file)
-          val track = GpxMapper.toTrack(gpx)
-          val id = StoreHelper.storeTrack(track.copy(id = StoreHelper.nextId), fileName = "Track_" + StoreHelper.nextId + ".json")
-          Ok("File uploaded with id=" + id)
-      }.getOrElse {
-        Redirect(routes.Application.upload).flashing(
-          "error" -> "Missing file")
+      val ids: Seq[Int] = for {
+        gpxFile <- request.body.files
+      } yield {
+        val filename = gpxFile.filename
+        val file: File = Play.current.getFile(s"/tmp/gpx/$filename")
+        gpxFile.ref.moveTo(file, replace = true)
+        val gpx = ParseThatGpx.parse(file)
+        val track = GpxMapper.toTrack(gpx)
+        StoreHelper.storeTrack(track.copy(id = StoreHelper.nextId), fileName = "Track_" + StoreHelper.nextId + ".json")
       }
 
+      Future.successful(Ok("File(s) uploaded with id=" + ids))
+
   }
+
 }

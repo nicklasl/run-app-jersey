@@ -6,12 +6,7 @@ object Application extends Controller {
 
   def index = Action {
     implicit request =>
-    Ok(views.html.index("All your GPX belong to us!"))
-  }
-
-  def upload = Action {
-    implicit request =>
-    Ok(views.html.upload())
+      Ok(views.html.index("All your GPX belong to us!"))
   }
 
 }

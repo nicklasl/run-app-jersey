@@ -1,6 +1,6 @@
-var trackApp = angular.module('trackApp', ['ui.bootstrap', 'leaflet-directive']);
+var trackApp = angular.module('trackApp', ['ui.bootstrap', 'leaflet-directive', 'angularFileUpload']);
 
-trackApp.controller('ViewTrackController', function ($scope, $http, $modal) {
+trackApp.controller('MainController', function ($scope, $http, $modal) {
 
     $scope.tracks = [];
     $scope.predicate = '-date';
@@ -23,7 +23,42 @@ trackApp.controller('ViewTrackController', function ($scope, $http, $modal) {
         });
     }
 
+    $scope.addNew = function() {
+        $modal.open({
+            templateUrl: 'assets/fragments/modal_upload.html',
+            controller: uploadController
+        });
+    }
+
 });
+
+var uploadController = function ($scope, $modalInstance, $upload) {
+
+    $scope.onFileSelect = function($files) {
+        console.log("files:", $files);
+        //$files: an array of files selected, each file has name, size, and type.
+        for (var i = 0; i < $files.length; i++) {
+            var file = $files[i];
+            $scope.upload = $upload.upload({
+                url: 'gpx',
+                method: 'PUT',
+                data: {
+                    gpx: $scope.myModelObj
+                },
+                file: file // or list of files ($files) for html5 only
+            }).progress(function(evt) {
+                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                }).success(function(data, status, headers, config) {
+                    console.log(data);
+                });
+        }
+    };
+
+    $scope.close = function () {
+        $modalInstance.dismiss();
+    }
+
+}
 
 var modalController = function ($scope, $modalInstance, track) {
 
