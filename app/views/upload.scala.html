@@ -1,0 +1,14 @@
+@main("Upload") {
+
+    @helper.form(action = routes.TrackController.storeGpx, 'enctype -> "multipart/form-data") {
+
+        <input type="file" name="gpx">
+
+        <p>
+            <input type="submit">
+        </p>
+
+    }
+}
+
+
